@@ -1,7 +1,7 @@
 // --- GAME CONFIGURATION ---
 const WORD_LIST = ["ant","apple","ball","banana","bed","bird","book","bus","cake","car","cat","cherry","chicken","chips","clock","cloud","cow","cup","daddy","dog","fish","flag","foot","fox","frog","georgia","grandad","grandma","grandpa","hand","hat","house","ivy","jimmy","key","leaf","moon","mummy","nanna","nose","pen","pig","rainbow","sheep","shoe","slide","snowman","star","sun","swing","zebra"];
 
-const pictures = ['image/ant.png','image/apple.png','image/ball.png','image/banana.png','image/bed.png','image/bird.png','image/book.png','image/bus.png','image/cake.png','image/car.png','image/cat.png','image/cherry.png','image/chicken.png','image/chip.png','image/clock.png','image/cloud.png','image/cow.png','image/cup.png','image/daddy.png','image/dog.png','image/fish.png','image/flag.png','image/foot.png','image/fox.png','image/frog.png','image/georgia.png','image/grandad.png','image/grandma.png','image/grandpa.png','image/hand.png','image/hat.png','image/house.png','image/ivy.png','image/jimmy.png','image/key.png','image/leaf.png','image/moon.png','image/mummy.png','image/nanna.png','image/nose.png','image/pen.png','image/pig.png','image/rainbow.png','image/sheep.png','image/shoe.png','image/slide.png','image/snowman.png','image/star.png','image/sun.png','image/swing.png','image/zebra.png'];
+const pictures = ['image/ant.png','image/apple.png','image/ball.png','image/banana.png','image/bed.png','image/bird.png','image/book.png','image/bus.png','image/cake.png','image/car.png','image/cat.png','image/cherry.png','image/chicken.png','image/chips.png','image/clock.png','image/cloud.png','image/cow.png','image/cup.png','image/daddy.png','image/dog.png','image/fish.png','image/flag.png','image/foot.png','image/fox.png','image/frog.png','image/georgia.png','image/grandad.png','image/grandma.png','image/grandpa.png','image/hand.png','image/hat.png','image/house.png','image/ivy.png','image/jimmy.png','image/key.png','image/leaf.png','image/moon.png','image/mummy.png','image/nanna.png','image/nose.png','image/pen.png','image/pig.png','image/rainbow.png','image/sheep.png','image/shoe.png','image/slide.png','image/snowman.png','image/star.png','image/sun.png','image/swing.png','image/zebra.png'];
 
 let chosenWord = "";
 let chosenPicture = "";
@@ -111,7 +111,7 @@ function checkWord() {
 		
 		// Show the "Start New Game" button
 		newGameBtn.classList.remove('hidden');
-		document.getElementById("initial-container").innerHTML = "";
+		//document.getElementById("initial-container").innerHTML = "";
 
 		// Disable further dragging on win
 		document.querySelectorAll('.draggable-letter').forEach(el => {
@@ -185,11 +185,11 @@ function setupGame() {
 		initialContainer.appendChild(letterDiv);
 	});
 
-	/* 3. Update the main titles to reflect the game goal
-	document.querySelector('h1').textContent = "Word Scramble Challenge";
+	// 3. Update the main titles to reflect the game goal
+	/*document.querySelector('h1').textContent = "Word Scramble Challenge";
 	document.querySelector('.subtitle').textContent = 
 		"Drag the letters to the slots below to form the target word. It has " + chosenWord.length + " letters.";*/
-	
+		
 	// Insert picture
 	document.getElementById("picture-zone").innerHTML = "";
 	const imgContainer = document.getElementById('picture-zone');
