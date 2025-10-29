@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Words with Ivy</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+<body class="min-h-screen">
+
+    <div class="container">
+        <!-- Title and subtitle will be updated by JavaScript -->
+        <h1>Words with Ivy and Georgia</h1>
+        <p class="section-title">
+            Who or what is in the picture?
+        </p>
+		
+		<div id="picture-zone" class="picture">
+			<!--<img src="image/banana.png" alt="" class="center-image"> -->
+		</div>
+
+        <!-- Initial Draggable Letters Area (Now a Drop Target) -->
+        <div id="initial-container">
+            <span class="section-title">Move the letters into the boxes:</span>
+            <!-- Letters will be dynamically inserted here by JavaScript -->
+        </div>
+        
+        <!-- Drop Zones (Given an ID for targeting) -->
+        <div id="drop-zone-grid" class="grid-container">
+            <!-- Boxes will be dynamically created here by JavaScript -->
+        </div>
+		
+		<div id="flash-emoji"></div>
+		
+		
+
+        <!-- New Message Box - Placed before the button -->
+        <div id="message-box" class="message-box hidden" role="alert"></div>
+
+        <!-- New Game Button: Now the last element inside the container -->
+        <button id="new-game-btn" onclick="setupGame()" class="hidden">
+            Start New Game
+        </button>
+    </div>
+
+<script src="script.js"></script>
+</body>
+</html>

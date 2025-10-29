@@ -1,0 +1,269 @@
+/* Base styles and variables */
+:root {
+	/* Color Mappings for consistency */
+	--color-bg-light: #f7f9fb;
+	--color-white: #ffffff;
+	--color-gray-200: #e5e7eb;
+	--color-gray-300: #d1d5db;
+	--color-gray-500: #6b7280;
+	--color-gray-700: #374151;
+	--color-gray-800: #1f2937;
+	--color-blue-500: #3b82f6;
+	--color-blue-50: #eff6ff;
+	--color-yellow-100: #fef9c3;
+	--color-green-100: #dcfce7;
+	--color-green-400: #4ade80; /* Brighter green for pulse */
+	--color-purple-100: #f3e8ff;
+}
+
+/* Set the Inter font and consistent background */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
+body {
+	font-family: 'Inter', sans-serif;
+	background-color: var(--color-bg-light);
+	min-height: 100vh;
+	padding: 1rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+/* Responsive Container */
+.container {
+	max-width: 64rem; 
+	width: 100%;
+}
+.picture {
+    display: flex;
+    justify-content: center;
+}
+
+.picture img {
+    max-width: 100%;
+    height: 200px;
+}
+
+
+
+
+/* Typography */
+h1 {
+	font-size: 1.875rem; 
+	font-weight: 800; 
+	color: var(--color-gray-800);
+	margin-bottom: 0.5rem; 
+	text-align: center;
+}
+.subtitle {
+	text-align: center;
+	color: var(--color-gray-500);
+	margin-bottom: 2rem; 
+}
+.section-title {
+	font-size: 1.25rem; 
+	font-weight: 600; 
+	color: var(--color-gray-700);
+	width: 100%;
+	text-align: center;
+	margin-bottom: 0.5rem; 
+}
+
+/* Initial Container Styling */
+#initial-container {
+	background-color: var(--color-white);
+	padding: 0.5rem; 
+	border-radius: 0.75rem; 
+	box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); 
+	margin-bottom: 2rem; 
+	border: 1px solid var(--color-gray-200);
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.9rem; 
+	/* Center the letters horizontally */
+	justify-content: center; 
+	transition: all 0.2s ease;
+}
+/* New highlight class for initial container */
+.initial-container-highlight {
+	border-color: var(--color-blue-500) !important;
+	box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.5), 0 10px 15px -3px rgba(0, 0, 0, 0.1); 
+	background-color: var(--color-blue-50) !important;
+}
+
+/* --- DRAG LOGIC STYLES --- */
+
+/* Styles for letter elements */
+.draggable-letter {
+	cursor: grab;
+	user-select: none;
+	touch-action: none; 
+	transition: transform 0.1s ease;
+	font-size: 1.2rem;
+	font-weight: 700;
+	width: 1.8rem; /* 40px */
+	height: 1.8rem; /* 40px */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 0.3rem; 
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06); 
+	transition: box-shadow 0.2s;
+	text-transform: uppercase;
+	color: var(--color-white); /* NEW: Changed to white for high contrast */
+}
+.draggable-letter:hover {
+	box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); 
+}
+/* Styles for disabled letters on win */
+.disabled-letter {
+	opacity: 0.6;
+	cursor: default !important;
+	pointer-events: none; /* Prevents all mouse/touch events */
+	box-shadow: none;
+}
+
+/* Placeholder to prevent tile movement on drag start */
+.drag-placeholder {
+	background-color: transparent !important;
+	border: 1px dashed var(--color-gray-300);
+	box-shadow: none;
+	cursor: default;
+}
+
+/* Class applied when actively dragging */
+.is-dragging {
+	cursor: grabbing;
+	opacity: 0.8;
+	transition: none; 
+}
+
+/* Styles for drop zones (Fixed size, just larger than the letter tiles) */
+.drop-zone {
+	transition: all 0.2s ease;
+	/* Adjusted min-height to focus on the content area since the title is gone */
+	min-height: 1.75rem; /* 44px, slightly bigger than the letter tile (40px) */
+	min-width: 1.75rem; /* 44px */
+	background-color: var(--color-white);
+	border: 2px dashed var(--color-gray-300); 
+	border-radius: 0.5rem; 
+	/* Reduced padding since title is gone */
+	padding: 0.25rem; 
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06); 
+	flex-shrink: 0; 
+	flex-grow: 0;
+}
+
+/* Drop zone highlight for feedback (drop-zone-highlight) */
+.drop-zone-highlight {
+	border-color: var(--color-blue-500) !important; 
+	background-color: var(--color-blue-50) !important; 
+	box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.5);
+}
+
+/* Drop zone content area (where letters are placed) */
+.drop-zone-content {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem; 
+	justify-content: center;
+	align-content: center; /* Centered vertically now that title is gone */
+	min-height: 20px; 
+	width: 100%;
+}
+
+
+/* --- TARGET WORD LAYOUT (Flexbox for centering) --- */
+.grid-container {
+	display: flex;
+	flex-wrap: nowrap; 
+	justify-content: center; 
+	gap: 0.25rem; 
+}
+
+/* --- MESSAGE BOX STYLES (NEW) --- */
+.message-box {
+	text-align: center;
+	padding: 1rem;
+	margin-top: 0.5rem;
+	margin-bottom: 1.5rem;
+	border-radius: 0.5rem;
+	font-weight: 600;
+	transition: all 0.3s ease-in-out;
+	opacity: 0;
+	transform: scale(0.95);
+	max-width: 600px;
+	width: 80%;
+	margin-left: auto;
+	margin-right: auto;
+}
+.hidden {
+	display: none !important;
+}
+.message-box.show {
+	opacity: 1;
+	transform: scale(1);
+	display: block !important;
+}
+.success {
+	background-color: var(--color-green-100);
+	color: #15803d; /* dark green */
+	border: 1px solid #4ade80;
+}
+.error {
+	background-color: var(--color-yellow-100);
+	color: #a16207; /* dark yellow */
+	border: 1px solid #facc15;
+}
+
+/* --- SUCCESS ANIMATION (NEW) --- */
+@keyframes pulse-success {
+	0% {
+		transform: scale(1);
+		box-shadow: 0 0 0 0 rgba(74, 215, 128, 0.7); /* Lighter green */
+	}
+	70% {
+		transform: scale(1.05);
+		box-shadow: 0 0 0 15px rgba(74, 215, 128, 0);
+	}
+	100% {
+		transform: scale(1);
+		box-shadow: 0 0 0 0 rgba(74, 215, 128, 0);
+	}
+}
+
+.drop-zone.drop-zone-success {
+	border-color: var(--color-green-400) !important;
+	background-color: var(--color-green-100) !important;
+	animation: pulse-success 0.5s ease-out;
+}
+
+/* Styling for the Start New Game Button */
+#new-game-btn {
+	background-color: var(--color-blue-500); 
+	color: var(--color-white); 
+	padding: 0.75rem 1.5rem; 
+	border-radius: 0.5rem; 
+	font-weight: 600; 
+	border: none;
+	cursor: pointer;
+	transition: background-color 0.2s, transform 0.1s;
+	display: block;
+	width: 100%;
+	max-width: 300px;
+	margin: 1rem auto 0 auto; /* Adjusted margin to be mostly on top */
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Desktop/Tablet Media Query (min-width: 768px) */
+@media (min-width: 768px) {
+	body {
+		padding: 2rem; 
+	}
+	h1 {
+		font-size: 2.25rem; 
+	}
+}
