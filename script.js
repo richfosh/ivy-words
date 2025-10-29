@@ -137,7 +137,7 @@ function setupGame() {
 	// Hide the "Start New Game" button immediately
 	newGameBtn.classList.add('hidden'); 
 
-	// 1. Choose a random word
+	// 1. Choose a random word with picture
 	const randomIndex = Math.floor(Math.random() * WORD_LIST.length);
 	chosenWord = WORD_LIST[randomIndex];
 	chosenPicture = pictures[randomIndex];
