@@ -227,7 +227,7 @@ h1 {
 		box-shadow: 0 0 0 0 rgba(74, 215, 128, 0.7); /* Lighter green */
 	}
 	70% {
-		transform: scale(1.05);
+		transform: scale(5);
 		box-shadow: 0 0 0 15px rgba(74, 215, 128, 0);
 	}
 	100% {
@@ -239,7 +239,7 @@ h1 {
 .drop-zone.drop-zone-success {
 	border-color: var(--color-green-400) !important;
 	background-color: var(--color-green-100) !important;
-	animation: pulse-success 0.5s ease-out;
+	animation: pulse-success 1.0s ease-out;
 }
 
 /* Styling for the Start New Game Button */
