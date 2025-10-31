@@ -1,6 +1,5 @@
 // --- GAME CONFIGURATION ---
 const WORD_LIST = ["ant","apple","ball","banana","bed","bird","book","bus","cake","car","cat","cherry","chicken","chips","clock","cloud","cow","cup","daddy","dog","fish","flag","foot","fox","frog","georgia","grandad","grandma","grandpa","hand","hat","house","ivy","jimmy","key","leaf","moon","mummy","nanna","nose","pen","pig","rainbow","sheep","shoe","slide","snowman","star","sun","swing","zebra"];
-
 const pictures = ['image/ant.png','image/apple.png','image/ball.png','image/banana.png','image/bed.png','image/bird.png','image/book.png','image/bus.png','image/cake.png','image/car.png','image/cat.png','image/cherry.png','image/chicken.png','image/chips.png','image/clock.png','image/cloud.png','image/cow.png','image/cup.png','image/daddy.png','image/dog.png','image/fish.png','image/flag.png','image/foot.png','image/fox.png','image/frog.png','image/georgia.png','image/grandad.png','image/grandma.png','image/grandpa.png','image/hand.png','image/hat.png','image/house.png','image/ivy.png','image/jimmy.png','image/key.png','image/leaf.png','image/moon.png','image/mummy.png','image/nanna.png','image/nose.png','image/pen.png','image/pig.png','image/rainbow.png','image/sheep.png','image/shoe.png','image/slide.png','image/snowman.png','image/star.png','image/sun.png','image/swing.png','image/zebra.png'];
 
 let chosenWord = "";
@@ -8,7 +7,7 @@ let chosenPicture = "";
 
 // --- GAME STATE FLAG (NEW) ---
 let isGameActive = false;
-  
+
 // --- DRAG LOGIC VARIABLES ---
 let draggedElement = null; 
 let offsetX, offsetY;      
@@ -28,7 +27,6 @@ let allDropTargets = [];
 function shuffleArray(array) {
 	for (let i = array.length - 1; i > 0; i--) {
 		const j = Math.floor(Math.random() * (i + 1));
-		// FIX: Added missing square brackets around the right-hand side of the destructuring assignment.
 		[array[i], array[j]] = [array[j], array[i]]; 
 	}
 	return array;
@@ -43,7 +41,6 @@ function getPointerPosition(e) {
 
 // Helper function for consistent color assignment
 function getLetterColor(index) {
-	// UPDATED: Using a palette of darker, high-contrast colors
 	const colors = [
 		'#fcd34d', // Amber 400
 		'#34d399', // Emerald 400
@@ -100,7 +97,7 @@ function checkWord() {
 		isGameActive = false; // Set game state to finished
 		
 		// Show success message
-		messageBox.textContent = `😃 Well done! You found the word: ${chosenWord.toUpperCase()}!`;
+		messageBox.textContent = `💎⭐😎🏆👍`;
 		messageBox.classList.remove('hidden', 'error');
 		messageBox.classList.add('show', 'success');
 		
@@ -111,7 +108,6 @@ function checkWord() {
 		
 		// Show the "Start New Game" button
 		newGameBtn.classList.remove('hidden');
-		//document.getElementById("initial-container").innerHTML = "";
 
 		// Disable further dragging on win
 		document.querySelectorAll('.draggable-letter').forEach(el => {
@@ -122,7 +118,7 @@ function checkWord() {
 
 	} else {
 		// Show error message
-		messageBox.textContent = `😕 That's not quite right. Keep trying!`;
+		messageBox.textContent = `☹️ ${formedWord.toUpperCase()} ☹️`;
 		messageBox.classList.remove('hidden', 'success');
 		messageBox.classList.add('show', 'error');
 	}
@@ -137,7 +133,7 @@ function setupGame() {
 	// Hide the "Start New Game" button immediately
 	newGameBtn.classList.add('hidden'); 
 
-	// 1. Choose a random word with picture
+	// 1. Choose a random word
 	const randomIndex = Math.floor(Math.random() * WORD_LIST.length);
 	chosenWord = WORD_LIST[randomIndex];
 	chosenPicture = pictures[randomIndex];
@@ -160,9 +156,22 @@ function setupGame() {
 
 	// Clear existing tiles in initial container
 	// The section title is the first child, so only remove children from index 1 onwards
-	while (initialContainer.children.length > 1) {
-		initialContainer.removeChild(initialContainer.lastChild);
-	}
+	//while (initialContainer.children.length > 1) {initialContainer.removeChild(initialContainer.lastChild);
+	//}
+	
+	
+	
+	// --- FIX: Robustly clear all dynamic children from initial container ---
+	// This ensures any leftover .empty-slot elements from the previous game are removed.
+	Array.from(initialContainer.children).forEach(child => {
+		if (!child.classList.contains('section-title')) {
+			child.remove();
+		}
+	});
+	// --- END FIX ---
+	
+	
+	
 	
 	// 2. Generate letter tiles dynamically using the SHUFFLED list
 	shuffledLetters.forEach((letter, index) => {
@@ -186,17 +195,18 @@ function setupGame() {
 	});
 
 	// 3. Update the main titles to reflect the game goal
-	/*document.querySelector('h1').textContent = "Word Scramble Challenge";
-	document.querySelector('.subtitle').textContent = 
-		"Drag the letters to the slots below to form the target word. It has " + chosenWord.length + " letters.";*/
-		
-	// Insert picture
+	
+		// Insert picture
 	document.getElementById("picture-zone").innerHTML = "";
 	const imgContainer = document.getElementById('picture-zone');
 	const img = document.createElement('img');
-    //img.src = pictures[1];
 	img.src = chosenPicture;
     imgContainer.appendChild(img);
+	
+	/*document.querySelector('h1').textContent = "Word Scramble Challenge";
+	document.querySelector('.subtitle').textContent = 
+		"Drag the letters to the slots below to form the target word. It has " + chosenWord.length + " letters.";*/
+
 
 	// 4. Clear existing target boxes and generate new ones (Dynamic Slot Creation)
 	gridContainer.innerHTML = '';
@@ -260,8 +270,7 @@ function handleDragStart(e) {
 	draggedElement.style.height = rect.height + 'px';
 	draggedElement.style.zIndex = 1000;
 
-	// FIX: Set the initial fixed position exactly to the current viewport position (rect.left/top).
-	// This prevents the "jump" that occurred when relying on clientX/Y.
+	// Set the initial fixed position exactly to the current viewport position (rect.left/top).
 	draggedElement.style.left = rect.left + 'px'; 
 	draggedElement.style.top = rect.top + 'px'; 
 
@@ -286,7 +295,7 @@ function handleDragMove(e) {
 	let foundDropZone = null;
 
 	allDropTargets.forEach(target => {
-		// Ensure we skip over the placeholder itself if it's the target
+		// Ensure we skip over the temporary placeholder itself if it's the target
 		if (target.classList && target.classList.contains('drag-placeholder')) return; 
 
 		// If targeting the initial container, we need to check the entire zone
@@ -332,12 +341,17 @@ function handleDragMove(e) {
 function handleDragEnd() {
 	if (!draggedElement) return;
 
-	// 1. Check if the source was the initial container and find the placeholder
+	// Flag to decide if the temporary placeholder should be converted into a permanent empty slot
+	let shouldKeepPlaceholder = false;
+	// Flag to track if the temporary placeholder was removed early (only happens on reorder into initial-container)
+	let placeholderAlreadyRemoved = false; 
+
 	const wasSourceInitialContainer = (sourceContainer && sourceContainer.id === 'initial-container');
-	let placeholder = null;
-	if (wasSourceInitialContainer) {
-		placeholder = initialContainer.querySelector('.drag-placeholder');
-	}
+	
+	// 1. Find the temporary placeholder IF it exists
+	let placeholder = wasSourceInitialContainer 
+		? initialContainer.querySelector('.drag-placeholder') 
+		: null;
 	
 	// Check if the source was one of the category boxes
 	const isSourceCategoryBox = Array.from(categoryDropZones).includes(sourceContainer);
@@ -345,18 +359,46 @@ function handleDragEnd() {
 	// --- Drop Logic ---
 	if (currentDropZone) {
 		if (currentDropZone.id === 'initial-container') {
-			// Scenario: Drop on Initial Container (Insert into position)
+			// Scenario: Drop on Initial Container (Insert into position / Re-order / FILL EMPTY SLOT)
 			
-			if (!placeholder) {
-				// Case 1: Returning a tile from a category box (no placeholder exists).
-				// Calculate insertion point based on coordinates.
-				const dragRect = draggedElement.getBoundingClientRect();
+			let filledEmptySlot = false;
+			const dragRect = draggedElement.getBoundingClientRect();
+			
+			// 0. HIGH PRIORITY CHECK: FILL AN EXISTING PERMANENT EMPTY SLOT
+			const emptySlots = initialContainer.querySelectorAll('.empty-slot');
+
+			for (const slot of emptySlots) {
+				const slotRect = slot.getBoundingClientRect();
+				// Check if the center of the dragged element is over the empty slot
+				// Simplified check for overlap based on bounding box
+				if (dragRect.left < slotRect.right && dragRect.right > slotRect.left &&
+					dragRect.top < slotRect.bottom && dragRect.bottom > slotRect.top) {
+					
+					// FOUND EMPTY SLOT: Insert the tile before the slot element, and remove the slot
+					slot.parentElement.insertBefore(draggedElement, slot);
+					slot.remove();
+					filledEmptySlot = true;
+					break; // Skip reorder calculation
+				}
+			}
+
+			if (!filledEmptySlot) {
+				// **If we did NOT fill an empty slot, proceed with standard re-ordering**
+				
+				// If dragging from the initial container, remove the temporary placeholder NOW
+				if (wasSourceInitialContainer && placeholder) {
+					placeholder.remove();
+					placeholderAlreadyRemoved = true; 
+				}
+
+				// Case 1: Returning a tile from a category box OR re-ordering within the pool.
 				const dragCenterX = dragRect.left + dragRect.width / 2;
 				
 				// Find the existing letter tile we are hovering over (to insert before)
-				// Filter out the section title to only consider draggable letters
+				// Filter for only draggable letters AND permanent empty slots
 				const children = Array.from(initialContainer.children).filter(
-					child => child.classList.contains('draggable-letter') && !child.classList.contains('drag-placeholder')
+					child => (child.classList.contains('draggable-letter') || child.classList.contains('empty-slot')) 
+							 && child !== draggedElement 
 				);
 				
 				let nextElement = null;
@@ -372,49 +414,54 @@ function handleDragEnd() {
 					}
 				}
 				
-				// Insert at the calculated position or append
+				// Insert at the calculated position or append (This re-inserts the tile)
 				if (nextElement) {
 					initialContainer.insertBefore(draggedElement, nextElement);
 				} else {
+					// Drop at the end
 					initialContainer.appendChild(draggedElement);
 				}
-			} else {
-				// Case 2: Dragging a tile within the initial container. 
-				// The placeholder holds the position. Insert the tile before the placeholder.
-				initialContainer.insertBefore(draggedElement, placeholder);
-			}
 
+				// FIX: If a tile is returning from a category box, but wasn't dropped exactly on the empty slot,
+				// we must still remove an empty slot to signify the tile has returned to the pool.
+				if (isSourceCategoryBox) {
+					const emptySlotToRemove = initialContainer.querySelector('.empty-slot');
+					if (emptySlotToRemove) {
+						emptySlotToRemove.remove();
+					}
+				}
 
+			} // End of !filledEmptySlot block
+			
 		} else {
 			// Scenario: Drop on a Category Box
 			const targetZoneHasContent = currentDropZone.children.length > 0;
 			
 			if (isSourceCategoryBox) {
-				// Path 1: Source is a Category Box (Allows swap or move)
+				// Path 1: Box -> Box (Swap or Move)
 				if (targetZoneHasContent) {
-					// Swap: Box -> Occupied Box
 					const targetLetter = currentDropZone.children[0]; 
 					sourceContainer.appendChild(targetLetter);
 					currentDropZone.appendChild(draggedElement);
 				} else {
-					// Move: Box -> Empty Box
 					currentDropZone.appendChild(draggedElement);
 				}
 
 			} else {
-				// Path 2: Source is the Initial Container (Must obey the single-item constraint)
+				// Path 2: Initial Container -> Category Box
 				if (targetZoneHasContent) {
 					// Constraint: Initial -> Occupied Box -> RETURN to Initial Container
 					if (placeholder) {
-						// Explicitly return the tile to the placeholder's spot
+						// Explicitly return the tile to the temporary placeholder's spot
 						initialContainer.insertBefore(draggedElement, placeholder);
 					} else {
-						// Fallback/Safety
+						// Fallback/Safety (Shouldn't happen for Initial -> Occupied)
 						sourceContainer.appendChild(draggedElement);
 					}
 				} else {
-					// Move: Initial -> Empty Box
+					// Move: Initial -> Empty Box (SUCCESSFUL MOVE OUT)
 					currentDropZone.appendChild(draggedElement);
+					shouldKeepPlaceholder = true; // Placeholder will become permanent empty slot
 				}
 			}
 		}
@@ -422,7 +469,7 @@ function handleDragEnd() {
 	} else {
 		// If dropped nowhere, return to the original source container.
 		if (wasSourceInitialContainer && placeholder) {
-			// Return to the placeholder's original spot
+			// Return to the temporary placeholder's original spot
 			initialContainer.insertBefore(draggedElement, placeholder);
 		} else {
 			// If source was a category box, just put it back in the box
@@ -430,12 +477,23 @@ function handleDragEnd() {
 		}
 	}
 	
-	// 2. Final cleanup of placeholder if one was used
-	if (placeholder) {
-		placeholder.remove();
+	// --- FINAL UNIFIED PLACEHOLDER CLEANUP LOGIC ---
+	
+	// Only proceed if the temporary placeholder existed AND it hasn't already been removed (via reordering)
+	if (wasSourceInitialContainer && placeholder && !placeholderAlreadyRemoved) {
+		if (shouldKeepPlaceholder) {
+			// Successful move out (Initial -> Empty Box). Convert the placeholder into a PERMANENT EMPTY SLOT.
+			placeholder.classList.remove('drag-placeholder');
+			placeholder.classList.add('empty-slot'); // ADD new permanent slot class
+			placeholder.textContent = ''; // Clear text content
+			placeholder.style.backgroundColor = 'transparent'; // Ensure transparency
+		} else {
+			// Dropped on occupied box OR dropped nowhere OR reordered (return). Remove the temporary placeholder.
+			placeholder.remove();
+		}
 	}
 
-	// 3. Cleanup and Reset styles (MUST happen after position is read and appendChild/insertBefore is done)
+	// 4. Cleanup and Reset styles (MUST happen after position is read and appendChild/insertBefore is done)
 	document.removeEventListener('mousemove', handleDragMove);
 	document.removeEventListener('mouseup', handleDragEnd);
 	document.removeEventListener('touchmove', handleDragMove);
@@ -460,7 +518,7 @@ function handleDragEnd() {
 	currentDropZone = null;
 	sourceContainer = null;
 	
-	// 4. Check if the word is correct after the drag operation
+	// 5. Check if the word is correct after the drag operation
 	checkWord();
 }
 
