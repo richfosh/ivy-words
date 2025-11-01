@@ -248,7 +248,6 @@ h1 {
 	animation: pulse-success 1s 3 cubic-bezier(.28,.84,.42,1);
 }
 
-
 /* Styling for the Start New Game Button */
 #new-game-btn {
 	background-color: var(--color-blue-500); 
